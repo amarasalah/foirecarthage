@@ -327,6 +327,10 @@ input, select, textarea { font-family: inherit; }
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+@keyframes slideInRight {
+  from { transform: translateX(110%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
 
 /* ── Responsive Grid ── */
 .grid-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
