@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { addClient } from "@/lib/firestore";
 import { useToast } from "@/components/ToastProvider";
-import { REGIONS, COUNTRIES, ACTIVITY_SECTORS, RATING_OPTIONS, TAG_SUGGESTIONS } from "@/lib/constants";
+import { REGIONS, COUNTRIES, ACTIVITY_SECTORS, RATING_OPTIONS, TAG_SUGGESTIONS, JOB_TITLES } from "@/lib/constants";
 import CloudinaryUpload from "@/components/CloudinaryUpload";
 
 function Section({ icon: Icon, title, color, delay, children }) {
@@ -38,7 +38,7 @@ export default function AddClientPage() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     firstName: "", lastName: "", phone: "", email: "",
-    company: "", posteTravail: "", activitySector: "",
+    company: "", posteTravail: "", posteTravailAutre: "", activitySector: "",
     country: "Tunisie", region: "", delegation: "", address: "",
     facebook: "", instagram: "", linkedin: "", twitter: "", website: "",
     rating: "", tags: [], notes: "", mediaUrls: [], avatar: "",
@@ -62,7 +62,9 @@ export default function AddClientPage() {
     }
     setSaving(true);
     try {
-      await addClient({ ...form, visitDate: new Date().toISOString() });
+      const finalPoste = form.posteTravail === "Autre" ? (form.posteTravailAutre || "Autre") : form.posteTravail;
+      const { posteTravailAutre, ...rest } = form;
+      await addClient({ ...rest, posteTravail: finalPoste, visitDate: new Date().toISOString() });
       addToast("Client ajouté avec succès !", "success");
       router.push("/dashboard/clients");
     } catch (err) {
@@ -164,11 +166,20 @@ export default function AddClientPage() {
               </div>
               <div className="form-group">
                 <label className="form-label">Poste de Travail</label>
-                <div style={inputWrap}>
-                  <Briefcase size={14} style={inputIconStyle} />
-                  <input className="form-input" placeholder="Directeur, Manager..." value={form.posteTravail}
-                    onChange={(e) => update("posteTravail", e.target.value)} style={inputPadded} />
-                </div>
+                <select className="form-select" value={form.posteTravail}
+                  onChange={(e) => update("posteTravail", e.target.value)}>
+                  <option value="">Sélectionner un poste...</option>
+                  {JOB_TITLES.map((j) => <option key={j} value={j}>{j}</option>)}
+                </select>
+                {form.posteTravail === "Autre" && (
+                  <input
+                    className="form-input"
+                    placeholder="Précisez le poste..."
+                    value={form.posteTravailAutre || ""}
+                    onChange={(e) => update("posteTravailAutre", e.target.value)}
+                    style={{ marginTop: 8 }}
+                  />
+                )}
               </div>
             </div>
             <div className="form-group" style={{ marginTop: 14 }}>

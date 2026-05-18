@@ -65,3 +65,16 @@ export const TAG_SUGGESTIONS = [
   "Investisseur", "Exposant", "Visiteur", "Institutionnel",
   "International", "Local", "PME", "Start-up", "Grande Entreprise"
 ];
+
+export const JOB_TITLES = [
+  "Ingénieur Conseil",
+  "Architecte",
+  "Entrepreneur",
+  "Fournisseur",
+  "Directeur Technique",
+  "Directeur Général",
+  "Conducteur de Travaux",
+  "Chef Chantier",
+  "Technicien en Génie Civil",
+  "Autre",
+];

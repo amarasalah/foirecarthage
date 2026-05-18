@@ -6,8 +6,20 @@ import { useToast } from "@/components/ToastProvider";
 
 export default function SettingsPage() {
   const { addToast } = useToast();
+  const DEFAULT_TEMPLATE = `Bonjour,
+
+Nous vous remercions sincèrement pour votre visite du stand SIREP PREFA lors du salon du bâtiment. Ce fut un réel plaisir d'échanger avec vous et de vous présenter nos solutions de préfabrication en béton.
+
+SIREP PREFA est spécialisée dans la fabrication de planchers à poutrelles et entrevous, de dalles alvéolées précontraintes ainsi que de poteaux électriques en béton précontraint, conformément aux normes françaises et européennes. Grâce à des équipements de dernière génération et un savoir-faire industriel reconnu, nous proposons des solutions performantes, rapides à mettre en œuvre et adaptées à tous types de projets.
+
+Nous restons à votre entière disposition pour toute étude, devis ou information complémentaire, et espérons avoir prochainement l'opportunité de collaborer avec vous.
+
+📧 E-mail : contact@sirep-prefa.com.tn
+🌐 Site web : sirep-prefa.com.tn
+📞 Téléphone : +216 92 592 004 / +216 79 700 234`;
+
   const [template, setTemplate] = useState(
-    "Bonjour {firstName},\n\nSuite à notre rencontre à la {foireName}, nous souhaitons rester en contact avec vous.\n\nNous serions ravis de discuter d'éventuelles collaborations.\n\nCordialement,\nL'équipe Foire Carthage"
+    () => (typeof window !== "undefined" && localStorage.getItem("whatsapp_template")) || DEFAULT_TEMPLATE
   );
 
   const handleSave = () => {
