@@ -10,7 +10,7 @@ import {
 import { addClient } from "@/lib/firestore";
 import { useToast } from "@/components/ToastProvider";
 import { REGIONS, COUNTRIES, ACTIVITY_SECTORS, RATING_OPTIONS, TAG_SUGGESTIONS } from "@/lib/constants";
-import { CldUploadWidget } from "next-cloudinary";
+import CloudinaryUpload from "@/components/CloudinaryUpload";
 
 function Section({ icon: Icon, title, color, delay, children }) {
   return (
@@ -331,13 +331,10 @@ export default function AddClientPage() {
 
           {/* Media */}
           <Section icon={Upload} title="Médias" color="linear-gradient(135deg, #f43f5e, #fb7185)" delay={0.2}>
-            <CldUploadWidget
-              uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
-              onSuccess={(result) => {
-                if (result.info?.secure_url) {
-                  setForm((prev) => ({ ...prev, mediaUrls: [...prev.mediaUrls, result.info.secure_url] }));
-                  addToast("Fichier uploadé !", "success");
-                }
+            <CloudinaryUpload
+              onSuccess={(url) => {
+                setForm((prev) => ({ ...prev, mediaUrls: [...prev.mediaUrls, url] }));
+                addToast("Fichier uploadé !", "success");
               }}
             >
               {({ open }) => (
@@ -355,7 +352,7 @@ export default function AddClientPage() {
                   </div>
                 </motion.button>
               )}
-            </CldUploadWidget>
+            </CloudinaryUpload>
             {form.mediaUrls.length > 0 && (
               <div style={{ display: "flex", gap: 10, marginTop: 14, flexWrap: "wrap" }}>
                 {form.mediaUrls.map((url, i) => (

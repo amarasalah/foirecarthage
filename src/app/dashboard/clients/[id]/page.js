@@ -6,7 +6,7 @@ import { ArrowLeft, Edit, Trash2, MessageCircle, Phone, Mail, MapPin, Globe, Bri
 import { getClient, updateClient, deleteClient } from "@/lib/firestore";
 import { useToast } from "@/components/ToastProvider";
 import { REGIONS, COUNTRIES, ACTIVITY_SECTORS, RATING_OPTIONS, TAG_SUGGESTIONS } from "@/lib/constants";
-import { CldUploadWidget } from "next-cloudinary";
+import CloudinaryUpload from "@/components/CloudinaryUpload";
 
 export default function ClientDetailPage({ params }) {
   const { id } = use(params);
@@ -150,10 +150,10 @@ export default function ClientDetailPage({ params }) {
             </div>
             <div className="form-group" style={{ gridColumn: "1 / -1" }}>
               <label className="form-label">Médias</label>
-              <CldUploadWidget uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
-                onSuccess={(r) => { if (r.info?.secure_url) { setForm((p) => ({ ...p, mediaUrls: [...(p.mediaUrls || []), r.info.secure_url] })); } }}>
+              <CloudinaryUpload
+                onSuccess={(url) => { setForm((p) => ({ ...p, mediaUrls: [...(p.mediaUrls || []), url] })); }}>
                 {({ open }) => <button type="button" onClick={() => open()} className="btn btn-secondary btn-sm">📎 Ajouter un média</button>}
-              </CldUploadWidget>
+              </CloudinaryUpload>
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 20 }}>
